@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  mysql-al:
+    image: mysql:8
+    ports:
+      - "${DB_PORT:-33068}:3306"
+    volumes:
+      - ./mysql/.data:/var/lib/mysql
+      - ./mysql/initdb:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: mobile
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-123456}"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default_authentication_plugin=mysql_native_password
+    networks:
+      - mobile-network
+    container_name: mysql-al
+
+networks:
+  mobile-network:
