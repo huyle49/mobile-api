@@ -13,7 +13,17 @@ app.use(
   express.text()
 );
 app.use("/api", mainRouter);
+app.use((error, req, res, next) => {
+  console.error(error);
 
+  if (error.name === "HTTPError") {
+    return res
+      .status(error.response.statusCode)
+      .send({ message: error.message });
+  }
+
+  return res.sendStatus(error.status || 500);
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
