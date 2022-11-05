@@ -5,12 +5,15 @@ const { getConnection } = require("../database");
 const { kbs } = require("../helpers/kbs");
 const { getRules } = require("../helpers/rule");
 const connection = getConnection();
-router.get("/", async (req, res) => {
+router.get("/kbs", async (req, res) => {
   const rules = getRules();
-  const ids = kbs(rules, ["G1", "NN1"]);
-  console.log(`SELECT * FROM mobile where id IN (${ids.join(", ")})`);
+  const { gt } = req.query;
+  const input = gt.split(",");
+  const ids = kbs(rules, input);
+  console.log(ids);
+  const query = ids.map((id) => `'${id}'`).join(",");
   const [rows] = await connection.query(
-    `SELECT * FROM mobile where id IN (${ids.join(",")})`
+    `SELECT * FROM mobile where id IN (${query})`
   );
   res.send(rows);
 });
