@@ -17,17 +17,17 @@ function kbs(rules, input) {
 }
 
 function getRulesByInput(rules, gt) {
-  const lst = [];
+  const newRules = [];
   rules.forEach((rule) => {
     if (rule.left.length <= gt.length) {
       let count = 0;
       gt.forEach((lt) => {
         if (rule.left.includes(lt)) count++;
       });
-      if (count === rule.left.length) lst.push(rule);
+      if (count === rule.left.length) newRules.push(rule);
     }
   });
-  return lst;
+  return newRules;
 }
 
 module.exports = {
